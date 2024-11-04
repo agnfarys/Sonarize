@@ -26,4 +26,5 @@ public class PlaylistController {
     public List<Playlist> getPlaylistsByUserId(@PathVariable String userId) {
         return playlistService.getPlaylistsByUserId(userId);
     }
+
 }

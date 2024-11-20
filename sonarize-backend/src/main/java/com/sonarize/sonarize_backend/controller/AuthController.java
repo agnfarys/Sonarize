@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private static final String clientId = "6bde7c93eba54dcb9b8bd1edec9d050b";
-    private static final String clientSecret = "2f6849d460a84ce99dc0298d449994b5";
+    private static final String clientId = "";
+    private static final String clientSecret = "";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/auth/callback");
     private static String code = "";
 

@@ -35,7 +35,6 @@ public class ChatGPTService {
         Map<String, Object> requestBody = createRequestBody(prompt, survey.getPlaylistLength());
 
 
-        // Send request to the ChatGPT API and get raw response
         String rawResponse = sendChatGPTRequest(requestBody);
 
         // Parse the response to get only song titles

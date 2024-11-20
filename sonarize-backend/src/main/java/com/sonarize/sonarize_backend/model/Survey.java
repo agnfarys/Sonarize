@@ -12,7 +12,7 @@ import java.util.List;
 public class Survey {
     @Id
     private String id;
-    private String userId;  // Klucz obcy do `users`
+    private String userId;
     private String mood;
     private List<String> genres;
     private String energyLevel;

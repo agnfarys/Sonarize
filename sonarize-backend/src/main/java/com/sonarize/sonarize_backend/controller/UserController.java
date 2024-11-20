@@ -67,26 +67,5 @@ public class UserController {
             throw new RuntimeException("Error fetching recently played tracks: " + e.getMessage());
         }
     }
-
-
-    @Autowired
-    private ChatGPTService chatGPTService;
-
-    @GetMapping("/test")
-    public List<String> test() {
-        Survey survey = new Survey();
-        survey.setMood("HAPPY");
-        survey.setGenres(List.of("ROCK", "POP"));
-        survey.setEnergyLevel("80");
-        survey.setOccasion("PARTY");
-        survey.setFavoriteArtists(List.of("Roling Stones", "AC/DC"));
-        survey.setDiscoveryPreference("NEW_RELEASES");
-        survey.setLanguagePreference("EN");
-        survey.setPlaylistLength("5");
-
-        List<String> recommendations = chatGPTService.generateRecommendations(survey);
-        System.out.println("Recommended Playlist: " + recommendations);
-        return recommendations;
-    }
 }
 

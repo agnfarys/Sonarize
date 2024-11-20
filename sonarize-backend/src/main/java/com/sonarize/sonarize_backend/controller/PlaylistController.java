@@ -76,7 +76,6 @@ public class PlaylistController {
     @PostMapping("/generate-chat-playlist")
     public String generateChatPlaylist(@RequestBody Survey survey, @RequestParam String userId) {
         try {
-            // Pobieranie użytkownika
             Optional<User> user = userService.getUserById(userId);
             if (user.isEmpty()) {
                 throw new RuntimeException("User not found with ID: " + userId);
@@ -84,7 +83,6 @@ public class PlaylistController {
 
             spotifyApi.setAccessToken(user.get().getAccessToken());
 
-            // Generowanie rekomendacji
             List<String> recommendedTracks = chatGPTService.generateRecommendations(survey);
             if (recommendedTracks == null || recommendedTracks.isEmpty()) {
                 throw new RuntimeException("No recommended tracks generated.");
@@ -97,14 +95,12 @@ public class PlaylistController {
                 throw new RuntimeException("All recommended tracks are null.");
             }
 
-            // Tworzenie playlisty
             var createPlaylistRequest = spotifyApi.createPlaylist(user.get().getSpotifyId(), "ChatGPT Generated Playlist")
                     .description("Playlist created based on ChatGPT recommendations")
                     .public_(false)
                     .build();
             var playlist = createPlaylistRequest.execute();
 
-            // Wyszukiwanie i dodawanie utworów
             List<String> uris = recommendedTracks.stream()
                     .map(track -> {
                         try {

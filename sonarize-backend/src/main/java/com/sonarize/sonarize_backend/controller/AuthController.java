@@ -50,79 +50,35 @@ public class AuthController {
                 + "&scope=" + scopes;
     }
 
-
-
     @GetMapping("/callback")
     public String callback(@RequestParam String code) {
         try {
-            // Wymiana kodu na tokeny
             AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
             AuthorizationCodeCredentials credentials = authorizationCodeRequest.execute();
 
             spotifyApi.setAccessToken(credentials.getAccessToken());
             spotifyApi.setRefreshToken(credentials.getRefreshToken());
 
-            // Pobieranie danych użytkownika ze Spotify
             var userProfile = spotifyApi.getCurrentUsersProfile().build().execute();
 
-            // Szukanie użytkownika w bazie
             User user = userService.getUserBySpotifyId(userProfile.getId());
             if (user == null) {
-                // Tworzenie nowego użytkownika
                 user = new User();
-                user.setId(java.util.UUID.randomUUID().toString()); // Generowanie unikalnego ID
+                user.setId(java.util.UUID.randomUUID().toString());
                 user.setSpotifyId(userProfile.getId());
                 user.setUsername(userProfile.getDisplayName());
                 user.setCreatedAt(LocalDateTime.now().toString());
             }
 
-            // Aktualizacja tokenów
             user.setAccessToken(credentials.getAccessToken());
             user.setRefreshToken(credentials.getRefreshToken());
 
-            // Zapis użytkownika
             userService.saveUser(user);
 
             return "Authenticated and registered successfully!";
         } catch (Exception e) {
             return "Authentication failed: " + e.getMessage();
         }
-    }
-
-
-//    @GetMapping("login")
-//    @ResponseBody
-//    public String spotifyLogin() {
-//        AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
-//                .scope("user-read-private, user-read-email, user-top-read")
-//                .show_dialog(true)
-//                .build();
-//        final URI uri = authorizationCodeUriRequest.execute();
-//        return uri.toString();
-//    }
-
-    @GetMapping("/getUserCode")
-    public String getSpotifyUserCode(@RequestParam("code") String userCode, HttpServletResponse response) {
-        code = userCode;
-        AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
-
-        try {
-            final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
-
-            // Set access and refresh token for further "spotifyApi" object usage
-            spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
-            spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
-
-            System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
-        } catch (CompletionException e) {
-            System.out.println("Error: " + e.getCause().getMessage());
-        } catch (CancellationException e) {
-            System.out.println("Async operation cancelled.");
-        } catch (IOException | ParseException | SpotifyWebApiException e) {
-            throw new RuntimeException(e);
-        }
-
-        return spotifyApi.getAccessToken();
     }
 
 }

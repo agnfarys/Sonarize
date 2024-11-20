@@ -10,10 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 public class User {
     @Id
-    private String id;
-    private String username;
-    private String password;
-    private String createdAt;
+    private String id; // MongoDB ID (unikalne)
 
+    private String spotifyId;    // ID użytkownika w Spotify
+    private String username;     // Login użytkownika
+    private String createdAt;    // Data utworzenia konta
+    private String accessToken;  // Token dostępu Spotify
+    private String refreshToken; // Token odświeżania Spotify
 }
-

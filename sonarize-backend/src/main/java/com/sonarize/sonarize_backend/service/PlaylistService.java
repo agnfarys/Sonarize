@@ -26,4 +26,14 @@ public class PlaylistService {
     public List<Playlist> getPlaylistsByUserId(String userId) {
         return playlistRepository.findByUserId(userId);
     }
+
+    public Playlist saveGeneratedPlaylist(String userId, String playlistId, List<String> trackUris) {
+        Playlist playlist = new Playlist();
+        playlist.setUserId(userId);
+        playlist.setPlaylistLink("https://open.spotify.com/playlist/" + playlistId);
+        playlist.setTrackUris(trackUris);
+        playlist.setCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        return playlistRepository.save(playlist);
+    }
+
 }

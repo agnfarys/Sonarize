@@ -1,10 +1,19 @@
 package com.sonarize.sonarize_backend.controller;
 
+import com.sonarize.sonarize_backend.model.Survey;
 import com.sonarize.sonarize_backend.model.User;
+import com.sonarize.sonarize_backend.service.ChatGPTService;
 import com.sonarize.sonarize_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import se.michaelthelin.spotify.model_objects.specification.Artist;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.sonarize.sonarize_backend.controller.AuthController.spotifyApi;
 
@@ -41,7 +50,24 @@ public class UserController {
 
         return new se.michaelthelin.spotify.model_objects.specification.User[0];
     }
-}
+
+    @GetMapping("/recently-played")
+    public Object getRecentlyPlayedTracks() {
+        try {
+            var response = spotifyApi.getCurrentUsersRecentlyPlayedTracks().limit(10).build().execute();
+            return Arrays.stream(response.getItems())
+                    .map(item -> Map.of(
+                            "track", item.getTrack().getName(),
+                            "artist", Arrays.stream(item.getTrack().getArtists())
+                                    .map(ArtistSimplified::getName)
+                                    .collect(Collectors.joining(", "))
+                    ))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching recently played tracks: " + e.getMessage());
+        }
+    }
+
 
     @Autowired
     private ChatGPTService chatGPTService;
@@ -62,3 +88,5 @@ public class UserController {
         System.out.println("Recommended Playlist: " + recommendations);
         return recommendations;
     }
+}
+

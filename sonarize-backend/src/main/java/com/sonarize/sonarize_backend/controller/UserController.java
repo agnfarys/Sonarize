@@ -1,17 +1,13 @@
 package com.sonarize.sonarize_backend.controller;
 
-import com.sonarize.sonarize_backend.model.Survey;
 import com.sonarize.sonarize_backend.model.User;
-import com.sonarize.sonarize_backend.service.ChatGPTService;
 import com.sonarize.sonarize_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 

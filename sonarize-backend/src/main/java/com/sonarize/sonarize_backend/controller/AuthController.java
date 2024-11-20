@@ -2,23 +2,15 @@ package com.sonarize.sonarize_backend.controller;
 
 import com.sonarize.sonarize_backend.model.User;
 import com.sonarize.sonarize_backend.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
-import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
-
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
-import org.apache.hc.core5.http.ParseException;
-import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
-
-import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletionException;
+
 
 
 @RestController

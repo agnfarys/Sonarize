@@ -88,13 +88,6 @@ public class PlaylistController {
                 throw new RuntimeException("No recommended tracks generated.");
             }
 
-            recommendedTracks = recommendedTracks.stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-            if (recommendedTracks.isEmpty()) {
-                throw new RuntimeException("All recommended tracks are null.");
-            }
-
             var createPlaylistRequest = spotifyApi.createPlaylist(user.get().getSpotifyId(), "ChatGPT Generated Playlist")
                     .description("Playlist created based on ChatGPT recommendations")
                     .public_(false)
@@ -120,6 +113,8 @@ public class PlaylistController {
             }
 
             spotifyApi.addItemsToPlaylist(playlist.getId(), uris.toArray(new String[0])).build().execute();
+
+            playlistService.saveGeneratedPlaylist(userId, playlist.getId(), uris);
 
             return "Playlist created successfully: https://open.spotify.com/playlist/" + playlist.getId();
         } catch (Exception e) {

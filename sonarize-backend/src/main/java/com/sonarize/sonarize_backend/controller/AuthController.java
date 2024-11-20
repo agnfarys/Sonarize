@@ -53,6 +53,10 @@ public class AuthController {
 
             var userProfile = spotifyApi.getCurrentUsersProfile().build().execute();
 
+            if (userProfile == null || userProfile.getId() == null) {
+                throw new IllegalArgumentException("Spotify user profile or ID is null.");
+            }
+
             User user = userService.getUserBySpotifyId(userProfile.getId());
             if (user == null) {
                 user = new User();
@@ -64,7 +68,6 @@ public class AuthController {
 
             user.setAccessToken(credentials.getAccessToken());
             user.setRefreshToken(credentials.getRefreshToken());
-
             userService.saveUser(user);
 
             return "Authenticated and registered successfully!";

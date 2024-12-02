@@ -1,0 +1,185 @@
+.landing {
+    box-sizing: border-box;
+    background: #0d1b2a;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Gradient circles (ellipses) */
+  .landing .ellipse-1 {
+    background: linear-gradient(
+      168.45deg,
+      rgba(122, 65, 192, 1) 23.15%,
+      rgba(188, 115, 96, 0) 100%
+    );
+    border-radius: 50%;
+    width: 906px;
+    height: 889px;
+    position: absolute;
+    left: -305.57px;
+    top: 68.2px;
+    transform: rotate(-33.255deg);
+  }
+  
+  .landing .ellipse-2 {
+    background: linear-gradient(
+      180deg,
+      rgba(122, 65, 192, 1) 30.11%,
+      rgba(255, 166, 0, 0.53) 100%
+    );
+    border-radius: 50%;
+    width: 934.29px;
+    height: 895.09px;
+    position: absolute;
+    left: 866px;
+    top: 843.34px;
+    transform: translate(174.66px, -335.49px);
+  }
+  
+  .landing .ellipse-3 {
+    background: linear-gradient(
+      180deg,
+      rgba(122, 65, 192, 1) 30.11%,
+      rgba(255, 166, 0, 0.53) 100%
+    );
+    border-radius: 50%;
+    width: 546.92px;
+    height: 523.97px;
+    position: absolute;
+    left: -248px;
+    top: 641.91px;
+    transform: rotate(-33.255deg);
+  }
+  
+  .landing .ellipse-4 {
+    background: linear-gradient(
+      180deg,
+      rgba(122, 65, 192, 1) 0%,
+      rgba(57, 30, 90, 0) 100%
+    );
+    border-radius: 50%;
+    width: 474.89px;
+    height: 454.96px;
+    position: absolute;
+    left: 1973.49px;
+    top: 438.87px;
+    transform: rotate(110.708deg);
+  }
+  
+  .landing .ellipse-5 {
+    background: linear-gradient(
+      180deg,
+      rgba(122, 65, 192, 1) 0%,
+      rgba(57, 30, 90, 0) 100%
+    );
+    border-radius: 50%;
+    width: 323px;
+    height: 309.45px;
+    position: absolute;
+    left: 881.63px;
+    top: 37px;
+    transform: rotate(44.173deg);
+  }
+  
+  /* Navigation (Log In and Sign Up) */
+  .landing .log-in {
+    color: #ffffff;
+    font-family: "Raleway-SemiBold", sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    position: absolute;
+    top: 20px;
+    right: 140px;
+  }
+  
+  .landing .sign-up {
+    color: #ffa600;
+    font-family: "Raleway-SemiBold", sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  /* Main heading (SONARIZE) */
+  .landing .sonarize {
+    font-family: "KronaOne-Regular", sans-serif;
+    font-size: 128px;
+    letter-spacing: 0.2em;
+    font-weight: 400;
+    color: transparent;
+    -webkit-text-stroke: 3px rgba(255, 255, 255, 0.8);
+    text-align: center;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Subtitle (Discover Music Like Never Before) */
+  .landing .discover-music-like-never-before {
+    color: #ffffff;
+    font-family: "Raleway-SemiBold", sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.25em;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Secondary Text */
+  .landing .join-us-and-let-your-journey-to-perfect-playlists-begin {
+    color: #ffffff;
+    font-family: "Raleway-SemiBold", sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+    text-align: center;
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Button */
+  .landing .rectangle-1 {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 166, 0, 0.22) 0%,
+      rgba(255, 166, 0, 0.1) 100%
+    );
+    border-radius: 15px;
+    border: 1px solid rgba(255, 166, 0, 0.5);
+    width: 300px;
+    height: 60px;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .landing .rectangle-1:hover {
+    background: rgba(255, 166, 0, 0.3);
+  }
+  
+  .landing .dive-into-your-soundtrack {
+    color: #ffffff;
+    font-family: "KronaOne-Regular", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  

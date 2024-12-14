@@ -73,9 +73,6 @@ public class AuthController {
 
             response.sendRedirect("http://localhost:5173/survey");
         } catch (Exception e) {
-            return "Authentication failed: " + e.getMessage();
-        }
-    }
             try {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed: " + e.getMessage());
             } catch (IOException ioException) {

@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@300;400;700;900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --black-gradient: linear-gradient(144.39deg,
+      #ffffff -278.56%,
+      #6d6d6d -78.47%,
+      #11101d 91.61%);
+  --card-shadow: 0px 20px 100px -10px rgba(66, 71, 91, 0.1);
+  --accent-color: #7A41C0;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-primary;
+}
+
+#home {
+  text-transform: uppercase;
+}
+
+.login {
+  text-transform: uppercase;
+}
+
+.tile {
+  background: linear-gradient(rgba(255, 255, 255, 0.25),
+      rgba(255, 166, 0, 0.15));
+}
+
+.insert {
+  background: rgba(217, 217, 217, 0.5);
+  border: none;
+  margin-top: 1rem;
+}
+
+.submit-button {
+  background: linear-gradient(rgba(255, 166, 0, 0.33), rgba(255, 166, 0, 0.15));
+  color: white;
+  text-transform: uppercase;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background: rgba(255, 166, 0, 0.5);
+}
+
+.spotify-button {
+  background: linear-gradient(rgba(255, 255, 255, 0.33),
+      rgba(255, 255, 255, 0.15));
+  color: white;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+}
+
+.spotify-button:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.arrow-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  /* Ensure width and height are equal */
+  height: 40px;
+  /* Ensure width and height are equal */
+  color: #fff;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  /* Remove padding to maintain circle shape */
+}
+
+.arrow-button:hover {
+  background-color: var(--accent-color);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.bg-landing {
+  background: url("./assets/ellipse1.svg") top left / 100px 100px no-repeat,
+    url("./assets/ellipse2.svg") top right / 100px 100px no-repeat,
+    url("./assets/ellipse3.svg") bottom left / 100px 100px no-repeat,
+    url("./assets/ellipse4.svg") bottom right / 100px 100px no-repeat,
+    url("./assets/ellipse5.svg") center / 150px 150px no-repeat;
+}
+
+.text-gradient {
+  color: #0d1b2a;
+  color: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(#ffffff, #ffa600, #ffffff);
+  text-transform: capitalize;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 5px transparent;
+}
+
+.bg-blue-gradient {
+  background: linear-gradient(157.81deg,
+      #def9fa -43.27%,
+      #bef3f5 -21.24%,
+      #9dedf0 12.19%,
+      #7de7eb 29.82%,
+      #5ce1e6 51.94%,
+      #33bbcf 90.29%);
+}
+
+.bg-black-gradient {
+  background: linear-gradient(144.39deg,
+      #ffffff -278.56%,
+      #6d6d6d -78.47%,
+      #11101d 91.61%);
+}
+
+.bg-black-gradient-2 {
+  background: linear-gradient(-168.39deg,
+      #ffffff -278.56%,
+      #6d6d6d -78.47%,
+      #11101d 91.61%);
+}
+
+.bg-gray-gradient {
+  background: linear-gradient(153.47deg,
+      rgba(255, 255, 255, 0) -341.94%,
+      #14101d 95.11%);
+}
+
+.bg-discount-gradient {
+  background: linear-gradient(125.17deg, #272727 0%, #11101d 100%);
+}
+
+.box-shadow {
+  box-shadow: 0px 20px 100px -10px rgba(66, 71, 91, 0.1);
+}
+
+.sidebar {
+  -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+  }
+
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+  }
+
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+.orange-gradient {
+  background: radial-gradient(circle at center, #ffffff, #ffa600);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}

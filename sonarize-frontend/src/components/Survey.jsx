@@ -29,7 +29,7 @@ const questions = [
   },
   {
     question: "favoriteArtists",
-    answers: ["pitbull", "rihanna", "malik montana", "ekipa"],
+    answers: ["pitbull", "malik montana", "ekipa", "fagata"],
     key: "favoriteArtists",
   },
   {
@@ -44,7 +44,7 @@ const questions = [
   },
   {
     question: "length",
-    answers: ["short", "medium", "long", "very long"],
+    answers: ["5", "10", "20", "50"],
     key: "playlistLength",
   },
 ];
@@ -81,7 +81,7 @@ const Survey = () => {
       // Transmit the JSON object to the backend
       try {
         const response = await fetch(
-          "http://localhost:8080/api/surveys/create",
+          "http://localhost:8080/api/playlists/generate-chat-playlist?userId=13d3f03d-1fb5-4027-ac90-d12dc44c08ba",
           {
             method: "POST",
             headers: {

@@ -3,6 +3,12 @@ import styles from "../style";
 import { spotify } from "../assets";
 
 const LogIn = () => {
+  const handleSpotifySignUp = () => {
+    const spotifyAuthUrl =
+      "https://accounts.spotify.com/authorize?client_id=6bde7c93eba54dcb9b8bd1edec9d050b&response_type=code&redirect_uri=http://localhost:8080/api/auth/callback&scope=user-read-recently-played playlist-modify-public playlist-modify-private";
+    window.location.href = spotifyAuthUrl;
+  };
+
   return (
     <div class="bg-landing w-full h-screen">
       <div className="flex items-center justify-center min-h-screen flex-col">
@@ -41,10 +47,11 @@ const LogIn = () => {
 
             <button
               type="button"
-              className="spotify-button w-full p-3 rounded-lg text-white font-krona transition-colors flex items-center justify-center gap-2"
+              className="spotify-button w-full p-3 rounded-lg bg-[#1DB954] text-white font-krona transition-colors flex items-center justify-center gap-2"
+              onClick={handleSpotifySignUp}
             >
-              sign in with Spotify
-              <img src={spotify} alt="Spotify" className="w-6 h-6 mx-3" />
+              <img src={spotify} alt="Spotify" className="w-6 h-6" />
+              Sign in with Spotify
             </button>
           </form>
         </div>

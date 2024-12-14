@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar, Hero, LogIn, SignUp, Survey } from "./components";
+import { Navbar, Hero, LogIn, SignUp, Survey, Playlist } from "./components";
 import { AuthProvider } from "./constants/index.jsx";
 import styles from "./style";
 
@@ -18,6 +18,7 @@ const App = () => (
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/survey" element={<Survey />} />
+          {/* <Route path="/playlist" element={<Playlist />} /> */}
         </Routes>
       </div>
     </AuthProvider>

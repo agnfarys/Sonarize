@@ -14,6 +14,7 @@
     "react-dom": "^18.3.1",
     "react-just-parallax": "^3.1.16",
     "react-router-dom": "^7.0.2",
+    "react-spotify-embed": "^2.0.4",
     "scroll-lock": "^2.1.5",
     "tailwindcss-text-fill-stroke": "^1.1.2"
   },

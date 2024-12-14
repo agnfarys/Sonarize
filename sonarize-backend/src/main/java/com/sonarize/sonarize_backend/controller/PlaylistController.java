@@ -7,12 +7,11 @@ import com.sonarize.sonarize_backend.service.ChatGPTService;
 import com.sonarize.sonarize_backend.service.PlaylistService;
 import com.sonarize.sonarize_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.sonarize.sonarize_backend.controller.AuthController.spotifyApi;
@@ -74,7 +73,9 @@ public class PlaylistController {
     }
 
     @PostMapping("/generate-chat-playlist")
-    public String generateChatPlaylist(@RequestBody Survey survey, @RequestParam String userId) {
+    public ResponseEntity<Map<String, String>> generateChatPlaylist(@RequestBody Survey survey, @RequestParam String userId) {
+        Map<String, String> response = new HashMap<>();
+
         try {
             Optional<User> user = userService.getUserById(userId);
             if (user.isEmpty()) {
@@ -116,10 +117,16 @@ public class PlaylistController {
 
             playlistService.saveGeneratedPlaylist(userId, playlist.getId(), uris);
 
-            return "Playlist created successfully: https://open.spotify.com/playlist/" + playlist.getId();
+            response.put("message", "Playlist created successfully");
+            response.put("playlistUrl", "https://open.spotify.com/playlist/" + playlist.getId());
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Error generating playlist: " + e.getMessage());
+            // Obsługujemy wyjątek i zwracamy odpowiedni komunikat błędu w JSON
+            response.put("error", "Error generating playlist: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
 }

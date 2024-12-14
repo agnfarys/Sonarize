@@ -8,10 +8,11 @@ import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
+
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
-
-
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,9 +30,9 @@ public class AuthController {
             .setClientSecret(clientSecret)
             .setRedirectUri(redirectUri)
             .build();
+
     private static final AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code)
             .build();
-
 
     @GetMapping("/login")
     public String login() {
@@ -43,7 +44,7 @@ public class AuthController {
     }
 
     @GetMapping("/callback")
-    public String callback(@RequestParam String code) {
+    public void callback(@RequestParam String code, HttpServletResponse response) {
         try {
             AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
             AuthorizationCodeCredentials credentials = authorizationCodeRequest.execute();
@@ -70,10 +71,13 @@ public class AuthController {
             user.setRefreshToken(credentials.getRefreshToken());
             userService.saveUser(user);
 
-            return "Authenticated and registered successfully!";
+            response.sendRedirect("http://localhost:5173/survey");
         } catch (Exception e) {
-            return "Authentication failed: " + e.getMessage();
+            try {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed: " + e.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
-
 }

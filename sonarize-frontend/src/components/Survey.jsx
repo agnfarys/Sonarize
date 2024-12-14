@@ -3,28 +3,49 @@ import arrow from "../assets/arrow.svg";
 
 const questions = [
   {
+    question: "userID",
+    answers: ["13d3f03d-1fb5-4027-ac90-d12dc44c08ba"],
+    key: "userId",
+  },
+  {
     question: "mood",
     answers: ["happy", "relaxed", "energetic", "sad"],
+    key: "mood",
   },
   {
     question: "genres",
     answers: ["pop", "rock", "hip-hop", "jazz"],
+    key: "genres",
   },
   {
     question: "energy",
     answers: ["calm", "moderate", "high", "extreme"],
+    key: "energyLevel",
   },
   {
-    question: "occcasion",
+    question: "occasion",
     answers: ["workout", "party", "relaxation", "study"],
+    key: "occasion",
+  },
+  {
+    question: "favoriteArtists",
+    answers: ["pitbull", "rihanna", "malik montana", "ekipa"],
+    key: "favoriteArtists",
+  },
+  {
+    question: "preference",
+    answers: ["new releases", "classics"],
+    key: "discoveryPreference",
   },
   {
     question: "language",
-    answers: ["english", "spanish", "polish", "miesiana"],
+    answers: ["english", "spanish", "polish", "mixed"],
+    key: "languagePreference",
   },
   {
     question: "length",
     answers: ["short", "medium", "long", "very long"],
+    key: "playlistLength",
   },
 ];
 
@@ -43,12 +64,42 @@ const Survey = () => {
     );
   };
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       // Handle survey completion
-      console.log("Survey completed. Selected answers:", selectedAnswers);
+      const surveyResult = questions.reduce((result, question, index) => {
+        result[question.key] =
+          question.key === "genres" || question.key === "favoriteArtists"
+            ? [selectedAnswers[index]]
+            : selectedAnswers[index];
+        return result;
+      }, {});
+      console.log("Survey completed. Selected answers:", surveyResult);
+
+      // Transmit the JSON object to the backend
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/surveys/create",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(surveyResult),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const responseData = await response.json();
+        console.log("Response from backend:", responseData);
+      } catch (error) {
+        console.error("Error transmitting survey results:", error);
+      }
     }
   };
 

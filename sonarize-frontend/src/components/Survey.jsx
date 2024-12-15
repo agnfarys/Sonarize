@@ -4,7 +4,7 @@ import arrow from "../assets/arrow.svg";
 const questions = [
   {
     question: "userID",
-    answers: ["13d3f03d-1fb5-4027-ac90-d12dc44c08ba"],
+    answers: [""],
     key: "userId",
   },
   {
@@ -81,7 +81,7 @@ const Survey = () => {
       // Transmit the JSON object to the backend
       try {
         const response = await fetch(
-          "http://localhost:8080/api/playlists/generate-chat-playlist?userId=13d3f03d-1fb5-4027-ac90-d12dc44c08ba",
+          "http://localhost:8080/api/playlists/generate-chat-playlist?userId=",
           {
             method: "POST",
             headers: {

@@ -1,5 +1,6 @@
 package com.sonarize.sonarize_backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sonarize.sonarize_backend.model.Playlist;
 import com.sonarize.sonarize_backend.model.Survey;
 import com.sonarize.sonarize_backend.model.User;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 import static com.sonarize.sonarize_backend.controller.AuthController.spotifyApi;
@@ -89,8 +92,14 @@ public class PlaylistController {
                 throw new RuntimeException("No recommended tracks generated.");
             }
 
-            var createPlaylistRequest = spotifyApi.createPlaylist(user.get().getSpotifyId(), "ChatGPT Generated Playlist")
-                    .description("Playlist created based on ChatGPT recommendations")
+            String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String playlistTitle = "ChatGPT Playlist - " + currentDateTime;
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String surveyDescription = objectMapper.writeValueAsString(survey);
+
+            var createPlaylistRequest = spotifyApi.createPlaylist(user.get().getSpotifyId(), playlistTitle)
+                    .description("Survey details: " + surveyDescription)
                     .public_(false)
                     .build();
             var playlist = createPlaylistRequest.execute();
@@ -128,5 +137,51 @@ public class PlaylistController {
         }
     }
 
+    @GetMapping("/user/{userId}/summary")
+    public ResponseEntity<Map<String, Object>> getUserSummary(@PathVariable String userId) {
+        try {
+            Optional<User> user = userService.getUserById(userId);
+            if (user.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "User not found"));
+            }
 
+            spotifyApi.setAccessToken(user.get().getAccessToken());
+
+            var topArtistsRequest = spotifyApi.getUsersTopArtists()
+                    .limit(50)
+                    .time_range("medium_term")
+                    .build();
+
+            var topArtists = topArtistsRequest.execute().getItems();
+
+            List<String> topArtistsList = Arrays.stream(topArtists)
+                    .limit(4)
+                    .map(artist -> artist.getName())
+                    .collect(Collectors.toList());
+
+            Map<String, Long> genreCount = Arrays.stream(topArtists)
+                    .map(artist -> artist.getGenres())
+                    .flatMap(Arrays::stream)
+                    .collect(Collectors.groupingBy(genre -> genre, Collectors.counting()));
+
+            List<String> topGenres = genreCount.entrySet().stream()
+                    .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                    .map(Map.Entry::getKey)
+                    .limit(4)
+                    .collect(Collectors.toList());
+
+            Map<String, Object> summary = Map.of(
+                    "topArtists", topArtistsList,
+                    "topGenres", topGenres
+            );
+
+            return ResponseEntity.ok(summary);
+
+        } catch (Exception e) {
+            System.err.println("Error fetching user summary: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error fetching user summary: " + e.getMessage()));
+        }
+    }
 }

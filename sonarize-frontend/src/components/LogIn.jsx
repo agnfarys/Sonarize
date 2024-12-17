@@ -5,7 +5,7 @@ import { spotify } from "../assets";
 const LogIn = () => {
   const handleSpotifySignUp = () => {
     const spotifyAuthUrl =
-      "https://accounts.spotify.com/authorize?client_id=6bde7c93eba54dcb9b8bd1edec9d050b&response_type=code&redirect_uri=http://localhost:8080/api/auth/callback&scope=user-read-recently-played playlist-modify-public playlist-modify-private";
+      "https://accounts.spotify.com/authorize?client_id=6bde7c93eba54dcb9b8bd1edec9d050b&response_type=code&redirect_uri=http://localhost:8080/api/auth/callback&scope=user-read-recently-played playlist-modify-public playlist-modify-private user-top-read user-read-private user-library-read playlist-read-private";
     window.location.href = spotifyAuthUrl;
   };
 

@@ -40,7 +40,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-        String scopes = "user-read-recently-played playlist-modify-public playlist-modify-private";
+        String scopes = "user-read-recently-played playlist-modify-public playlist-modify-private user-top-read user-read-private user-library-read playlist-read-private";
         return "https://accounts.spotify.com/authorize?client_id=" + clientId
                 + "&response_type=code"
                 + "&redirect_uri=" + redirectUri

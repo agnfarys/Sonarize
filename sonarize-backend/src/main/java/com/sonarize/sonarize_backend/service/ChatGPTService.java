@@ -58,17 +58,24 @@ public class ChatGPTService {
 
     private String buildPrompt(Survey survey) {
         return String.format(
-                "Create a playlist with %s songs for a user with the following preferences:\n" +
+                "Create a playlist with %s unique songs for a user with the following preferences:\n" +
                         "- Mood: %s\n" +
                         "- Genres: %s\n" +
                         "- Energy Level: %s (on a scale of 1-100)\n" +
                         "- Occasion: %s\n" +
                         "- Favorite Artists: %s\n" +
                         "- Discovery Preference: %s (e.g., new releases, top hits)\n" +
-                        "- Language Preference: %s\n" +
-                        "Only provide song titles in the specified genres that match these preferences. " +
-                        "No additional text or explanations. List the songs as follows:\n" +
-                        "1. Song Title\n2. Song Title\n3. Song Title...",
+                        "- Language Preference: %s\n\n" +
+                        "Instructions:\n" +
+                        "1. Your response must ONLY contain the list of songs in the exact format provided below.\n" +
+                        "2. Do not include any explanations, introductions, or additional text.\n" +
+                        "3. Each song must be unique and strictly follow the specified genres. If the genre strongly differs, ignore favorite artists.\n" +
+                        "4. After generating the list, ensure that each song in the playlist is unique. Remove any duplicates.\n" +
+                        "5. If removing duplicates results in fewer songs than required, add additional unique songs to meet the required playlist length.\n\n" +
+                        "Format:\n" +
+                        "1. Song Title\n2. Song Title\n3. Song Title\n...\n\n" +
+                        "Example:\n" +
+                        "1. Song Title 1\n2. Song Title 2\n3. Song Title 3\n...",
                 survey.getPlaylistLength(),
                 survey.getMood(),
                 String.join(", ", survey.getGenres()),
@@ -80,9 +87,10 @@ public class ChatGPTService {
         );
     }
 
+
     private Map<String, Object> createRequestBody(String prompt, String number_of_music) {
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "gpt-4o-mini");  // Using gpt-4-turbo as the cost-effective option
+        requestBody.put("model", "gpt-4o-2024-11-20");
         requestBody.put("messages", List.of(Map.of("role", "user", "content", prompt)));
         requestBody.put("max_tokens", 50 * Integer.parseInt(number_of_music)); // adjust tokens based on list length
         requestBody.put("temperature", 0.5); // lower temperature for more focused responses

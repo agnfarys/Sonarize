@@ -11,9 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
+
+    private String spotifyId;
     private String username;
-    private String password;
     private String createdAt;
-
+    private String accessToken;
+    private String refreshToken;
 }
-

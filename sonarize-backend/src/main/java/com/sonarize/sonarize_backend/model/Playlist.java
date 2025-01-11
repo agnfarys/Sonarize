@@ -12,7 +12,7 @@ import java.util.List;
 public class Playlist {
     @Id
     private String id;
-    private String userId;  // Klucz obcy do `users`
+    private String userId;
     private List<String> trackUris;
     private String playlistLink;
     private String createdAt;

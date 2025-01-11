@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -26,4 +27,21 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public User getUserBySpotifyId(String spotifyId) {
+        return userRepository.findBySpotifyId(spotifyId);
+    }
+
+    public void saveUser(User user) {
+        if (user.getId() == null || user.getSpotifyId() == null) {
+            throw new IllegalArgumentException("User must have a valid id and Spotify ID.");
+        }
+        userRepository.save(user);
+    }
+
+
+    public Optional<User> getUserById(String userId) {
+        return userRepository.findById(userId);
+    }
+
 }

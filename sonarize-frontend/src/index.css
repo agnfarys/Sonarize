@@ -52,6 +52,11 @@ body {
   background: rgba(255, 166, 0, 0.5);
 }
 
+.submit-button.selected {
+  background: rgba(255, 166, 0, 0.8);
+  color: white;
+}
+
 .spotify-button {
   background: linear-gradient(rgba(255, 255, 255, 0.33),
       rgba(255, 255, 255, 0.15));

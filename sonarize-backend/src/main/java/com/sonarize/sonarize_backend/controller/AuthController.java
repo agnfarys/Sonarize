@@ -3,12 +3,7 @@ package com.sonarize.sonarize_backend.controller;
 import com.sonarize.sonarize_backend.model.User;
 import com.sonarize.sonarize_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -17,8 +12,9 @@ import se.michaelthelin.spotify.requests.authorization.authorization_code.Author
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,7 +22,6 @@ public class AuthController {
     private static final String clientId = "6bde7c93eba54dcb9b8bd1edec9d050b";
     private static final String clientSecret = "8ab4cd78ad5740a08b8979b766187677";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/auth/callback");
-    private static String code = "";
 
     @Autowired
     private UserService userService;
@@ -35,9 +30,6 @@ public class AuthController {
             .setClientId(clientId)
             .setClientSecret(clientSecret)
             .setRedirectUri(redirectUri)
-            .build();
-
-    private static final AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code)
             .build();
 
     @GetMapping("/login")
@@ -77,13 +69,16 @@ public class AuthController {
             user.setRefreshToken(credentials.getRefreshToken());
             userService.saveUser(user);
 
-            // Przekierowanie z dodatkowymi parametrami
+            // Zakodowanie parametrów w URL
+            String encodedUsername = URLEncoder.encode(user.getUsername(), StandardCharsets.UTF_8);
             String redirectUrl = "http://localhost:5173/survey?userId=" + user.getId()
                     + "&accessToken=" + credentials.getAccessToken()
-                    + "&username=" + user.getUsername();
+                    + "&username=" + encodedUsername;
+
             response.sendRedirect(redirectUrl);
         } catch (Exception e) {
-            response.sendRedirect("http://localhost:5173/error?message=" + e.getMessage());
+            String encodedErrorMessage = URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8);
+            response.sendRedirect("http://localhost:5173/error?message=" + encodedErrorMessage);
         }
     }
 }

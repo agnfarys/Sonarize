@@ -6,6 +6,7 @@ import com.sonarize.sonarize_backend.model.Survey;
 import com.sonarize.sonarize_backend.model.User;
 import com.sonarize.sonarize_backend.service.ChatGPTService;
 import com.sonarize.sonarize_backend.service.PlaylistService;
+import com.sonarize.sonarize_backend.service.SurveyService;
 import com.sonarize.sonarize_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.sonarize.sonarize_backend.controller.AuthController.spotifyApi;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/playlists")
 public class PlaylistController {
     private final PlaylistService playlistService;
@@ -29,6 +31,9 @@ public class PlaylistController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SurveyService surveyService;
 
     @Autowired
     public PlaylistController(PlaylistService playlistService) {
@@ -43,6 +48,36 @@ public class PlaylistController {
     @GetMapping("/user/{userId}")
     public List<Playlist> getPlaylistsByUserId(@PathVariable String userId) {
         return playlistService.getPlaylistsByUserId(userId);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserPlaylists(@PathVariable String userId) {
+        try {
+            List<Playlist> playlists = playlistService.getPlaylistsByUserId(userId);
+            if (playlists.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No playlists found for the user.");
+            }
+            return ResponseEntity.ok(playlists);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error retrieving playlists: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{userId}/last")
+    public ResponseEntity<?> getLastPlaylist(@PathVariable String userId) {
+        try {
+            Optional<Playlist> lastPlaylist = playlistService.findTopByUserIdOrderByCreatedAtDesc(userId);
+
+            if (lastPlaylist.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No playlist found for this user.");
+            }
+
+            return ResponseEntity.ok(lastPlaylist.get());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error retrieving last playlist: " + e.getMessage());
+        }
     }
 
     @PostMapping("/create-from-songs")
@@ -125,6 +160,8 @@ public class PlaylistController {
             spotifyApi.addItemsToPlaylist(playlist.getId(), uris.toArray(new String[0])).build().execute();
 
             playlistService.saveGeneratedPlaylist(userId, playlist.getId(), uris);
+            survey.setUserId(userId);
+            surveyService.createSurvey(survey);
 
             response.put("message", "Playlist created successfully");
             response.put("playlistUrl", "https://open.spotify.com/playlist/" + playlist.getId());

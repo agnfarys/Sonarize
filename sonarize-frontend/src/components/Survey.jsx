@@ -1,80 +1,83 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import arrow from "../assets/arrow.svg";
 
-const userID = "f3090913-4366-413f-8b4e-de6594024501";
-
-const defaultQuestions = [
-  { question: "mood", answers: ["happy", "relaxed", "energetic", "sad"], key: "mood" },
-  { question: "genres", answers: ["pop", "rock", "hip-hop", "jazz"], key: "genres" },
-  { question: "energy", answers: ["calm", "moderate", "high", "extreme"], key: "energyLevel" },
-  { question: "occasion", answers: ["workout", "party", "relaxation", "study"], key: "occasion" },
-  { question: "preference", answers: ["new releases", "classics"], key: "discoveryPreference" },
-  { question: "language", answers: ["english", "spanish", "polish", "german", "mixed"], key: "languagePreference" },
-  { question: "length", answers: ["5", "10", "20", "50"], key: "playlistLength" },
-];
-
 const Survey = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [userID, setUserID] = useState(sessionStorage.getItem("userId"));
+  const [questions, setQuestions] = useState([
+    { question: "mood", answers: ["happy", "relaxed", "energetic", "sad"], key: "mood" },
+    { question: "genres", answers: ["pop", "rock", "hip-hop", "jazz"], key: "genres" },
+    { question: "energy", answers: ["calm", "moderate", "high", "extreme"], key: "energyLevel" },
+    { question: "occasion", answers: ["workout", "party", "relaxation", "study"], key: "occasion" },
+    { question: "preference", answers: ["new releases", "classics"], key: "discoveryPreference" },
+    { question: "language", answers: ["english", "spanish", "polish", "german", "mixed"], key: "languagePreference" },
+    { question: "length", answers: ["5", "10", "20", "50"], key: "playlistLength" },
+  ]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState(Array(defaultQuestions.length).fill(""));
-  const [questions, setQuestions] = useState(defaultQuestions);
+  const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(""));
   const [favoriteArtists, setFavoriteArtists] = useState([]);
-  const [inputText, setInputText] = useState("");
+  const [customInput, setCustomInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/playlists/user/${userID}/summary`);
-        if (!response.ok) throw new Error("Failed to fetch user data");
+    const params = new URLSearchParams(location.search);
 
-        const data = await response.json();
+    // Pobierz dane z parametrów URL
+    const userId = params.get("userId") || sessionStorage.getItem("userId");
+    const accessToken = params.get("accessToken") || sessionStorage.getItem("spotifyAccessToken");
+    const username = params.get("username") || sessionStorage.getItem("username");
 
-        const updatedQuestions = defaultQuestions.map((question) => {
-          if (question.key === "genres") {
-            return { ...question, answers: data.topGenres || question.answers };
-          }
-          return question;
-        });
+    // Zapisz dane do sessionStorage, jeśli nie są już zapisane
+    if (userId && !sessionStorage.getItem("userId")) {
+      sessionStorage.setItem("userId", userId);
+      setUserID(userId);
+    }
+    if (accessToken && !sessionStorage.getItem("spotifyAccessToken")) {
+      sessionStorage.setItem("spotifyAccessToken", accessToken);
+    }
+    if (username && !sessionStorage.getItem("username")) {
+      sessionStorage.setItem("username", username);
+    }
 
-        setQuestions(updatedQuestions);
-        setFavoriteArtists(data.topArtists || []);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+    if (!userId || !accessToken) {
+      console.error("Missing user data. Redirecting to login.");
+      navigate("/login");
+    }
+  }, [location.search, navigate]);
 
   const handleAnswerClick = (answer) => {
     const newSelectedAnswers = [...selectedAnswers];
     newSelectedAnswers[currentQuestionIndex] = answer;
     setSelectedAnswers(newSelectedAnswers);
-    setInputText("");
+    setCustomInput("");
   };
 
-  const handleInputChange = (event) => {
+  const handleCustomInputChange = (event) => {
     const value = event.target.value;
-    setInputText(value);
-
-    if (value) {
-      const newSelectedAnswers = [...selectedAnswers];
-      newSelectedAnswers[currentQuestionIndex] = value;
-      setSelectedAnswers(newSelectedAnswers);
+    const currentQuestion = questions[currentQuestionIndex];
+    if (currentQuestion.key === "length" && isNaN(value)) {
+      return;
     }
+
+    setCustomInput(value);
+    const newSelectedAnswers = [...selectedAnswers];
+    newSelectedAnswers[currentQuestionIndex] = value;
+    setSelectedAnswers(newSelectedAnswers);
   };
 
   const handleNextClick = async () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setInputText("");
+      setCustomInput("");
     } else {
       setLoading(true);
+
       const surveyResult = questions.reduce((result, question, index) => {
         const answer = selectedAnswers[index];
-        result[question.key] = question.key === "genres" && typeof answer === "string"
-          ? [answer]
-          : answer;
+        result[question.key] =
+          question.key === "genres" && typeof answer === "string" ? [answer] : answer;
         return result;
       }, {});
 
@@ -91,11 +94,10 @@ const Survey = () => {
         );
 
         if (!response.ok) throw new Error("Failed to send POST request");
-        const responseData = await response.json();
-        console.log("POST response:", responseData);
 
+        const responseData = await response.json();
         if (responseData.playlistUrl) {
-          window.open(responseData.playlistUrl, "_blank");
+          navigate(`/playlist-result?playlistUrl=${encodeURIComponent(responseData.playlistUrl)}`);
         }
       } catch (error) {
         console.error("Error sending POST data:", error);
@@ -133,7 +135,7 @@ const Survey = () => {
                   key={answer}
                   type="button"
                   className={`submit-button w-full p-3 rounded-lg font-krona transition-ease ${
-                    selectedAnswer === answer && inputText === "" ? "selected" : ""
+                    selectedAnswer === answer ? "selected" : ""
                   }`}
                   onClick={() => handleAnswerClick(answer)}
                 >
@@ -142,8 +144,8 @@ const Survey = () => {
               ))}
               <input
                 type="text"
-                value={inputText}
-                onChange={handleInputChange}
+                value={customInput}
+                onChange={handleCustomInputChange}
                 placeholder="Type your custom answer here..."
                 className="insert text-center font-raleway tracking-wide w-full mt-3 p-3 mb-6 rounded-lg text-white bg-gray-800 focus:outline-none"
               />

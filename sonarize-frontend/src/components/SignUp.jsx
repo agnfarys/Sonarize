@@ -1,6 +1,46 @@
+import React, { useState } from "react";
 import { spotify } from "../assets";
 
 const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const getCsrfToken = () => {
+    const cookies = document.cookie.split("; ");
+    const csrfCookie = cookies.find(cookie => cookie.startsWith("XSRF-TOKEN="));
+    return csrfCookie ? csrfCookie.split("=")[1] : null;
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XSRF-TOKEN": getCsrfToken(), // Dodanie CSRF
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        console.log("User signed up successfully");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Sign-up failed. Try again.");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred.");
+      console.error("Error during sign-up:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
     <div class="bg-landing w-full h-screen">
       <div className="flex items-center justify-center min-h-screen flex-col">

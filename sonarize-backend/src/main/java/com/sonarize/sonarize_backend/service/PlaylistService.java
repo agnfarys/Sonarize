@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaylistService {
@@ -21,6 +22,10 @@ public class PlaylistService {
     public Playlist createPlaylist(Playlist playlist) {
         playlist.setCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         return playlistRepository.save(playlist);
+    }
+
+    public Optional<Playlist> findTopByUserIdOrderByCreatedAtDesc(String userId){
+        return playlistRepository.findTopByUserIdOrderByCreatedAtDesc(userId);
     }
 
     public List<Playlist> getPlaylistsByUserId(String userId) {

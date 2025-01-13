@@ -10,7 +10,7 @@ const Hero = () => {
     if (isLoggedIn) {
       navigate("/survey");
     } else {
-      navigate("/survey"); // Change this to "/login" after implementing login
+      navigate("/login"); // Change this to "/login" after implementing login
     }
   };
 

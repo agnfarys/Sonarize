@@ -3,9 +3,12 @@ package com.sonarize.sonarize_backend.controller;
 import com.sonarize.sonarize_backend.model.User;
 import com.sonarize.sonarize_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -15,14 +18,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private static final String clientId = " ";
-    private static final String clientSecret = " ";
+    private static final String clientId = "6bde7c93eba54dcb9b8bd1edec9d050b";
+    private static final String clientSecret = "8ab4cd78ad5740a08b8979b766187677";
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/auth/callback");
     private static String code = "";
 
@@ -48,9 +50,7 @@ public class AuthController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<Map<String, String>> callback(@RequestParam String code) {
-        Map<String, String> response = new HashMap<>();
-
+    public void callback(@RequestParam String code, HttpServletResponse response) throws IOException {
         try {
             AuthorizationCodeRequest authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
             AuthorizationCodeCredentials credentials = authorizationCodeRequest.execute();
@@ -77,14 +77,13 @@ public class AuthController {
             user.setRefreshToken(credentials.getRefreshToken());
             userService.saveUser(user);
 
-            response.put("redirectUrl", "http://localhost:5173/survey");
-            response.put("userId", user.getId());
-
-            return ResponseEntity.ok(response);
+            // Przekierowanie z dodatkowymi parametrami
+            String redirectUrl = "http://localhost:5173/survey?userId=" + user.getId()
+                    + "&accessToken=" + credentials.getAccessToken()
+                    + "&username=" + user.getUsername();
+            response.sendRedirect(redirectUrl);
         } catch (Exception e) {
-            response.put("error", "Authentication failed: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            response.sendRedirect("http://localhost:5173/error?message=" + e.getMessage());
         }
     }
-
 }

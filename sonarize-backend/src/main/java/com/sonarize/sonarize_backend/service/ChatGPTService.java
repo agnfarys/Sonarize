@@ -55,6 +55,16 @@ public class ChatGPTService {
                 .collect(Collectors.toList());
     }
 
+    public List<String> generateDefaultRecommendations() {
+        return List.of(
+                "Imagine - John Lennon",
+                "Bohemian Rhapsody - Queen",
+                "Hotel California - Eagles",
+                "Shape of You - Ed Sheeran",
+                "Billie Jean - Michael Jackson"
+        );
+    }
+
 
     private String buildPrompt(Survey survey) {
         return String.format(

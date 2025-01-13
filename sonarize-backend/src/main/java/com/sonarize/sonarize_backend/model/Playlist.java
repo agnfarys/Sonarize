@@ -17,4 +17,43 @@ public class Playlist {
     private String playlistLink;
     private String createdAt;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public List<String> getTrackUris() {
+        return trackUris;
+    }
+
+    public void setTrackUris(List<String> trackUris) {
+        this.trackUris = trackUris;
+    }
+
+    public String getPlaylistLink() {
+        return playlistLink;
+    }
+
+    public void setPlaylistLink(String playlistLink) {
+        this.playlistLink = playlistLink;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 }

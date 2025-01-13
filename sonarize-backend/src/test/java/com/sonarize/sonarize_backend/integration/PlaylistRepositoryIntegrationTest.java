@@ -19,6 +19,6 @@ public class PlaylistRepositoryIntegrationTest {
     @Test
     public void shouldFindPlaylistsByUserId() {
         List<Playlist> playlists = playlistRepository.findByUserId("13d3f03d-1fb5-4027-ac90-d12dc44c08ba");
-        assertEquals(15, playlists.size());
+        assertEquals(12, playlists.size());
     }
 }

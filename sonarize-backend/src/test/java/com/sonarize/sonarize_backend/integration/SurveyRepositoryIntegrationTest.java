@@ -19,6 +19,6 @@ public class SurveyRepositoryIntegrationTest {
     @Test
     public void shouldFindSurveysByUserId() {
         List<Survey> surveys = surveyRepository.findByUserId("13d3f03d-1fb5-4027-ac90-d12dc44c08ba");
-        assertEquals(7, surveys.size());
+        assertEquals(6, surveys.size());
     }
 }

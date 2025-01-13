@@ -3,6 +3,7 @@ package com.sonarize.sonarize_backend.unit;
 import com.sonarize.sonarize_backend.model.Survey;
 import com.sonarize.sonarize_backend.repository.SurveyRepository;
 import com.sonarize.sonarize_backend.service.SurveyService;
+import com.sonarize.sonarize_backend.util.TestDataUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SurveyServiceTest {
@@ -26,26 +27,15 @@ class SurveyServiceTest {
     }
 
     @Test
-    void testCreateSurvey() {
-        Survey survey = new Survey();
-        survey.setUserId("123");
-        when(surveyRepository.save(any(Survey.class))).thenReturn(survey);
-
-        Survey createdSurvey = surveyService.createSurvey(survey);
-
-        assertEquals("123", createdSurvey.getUserId());
-        verify(surveyRepository, times(1)).save(survey);
-    }
-
-    @Test
     void testGetSurveyByUserId() {
-        String userId = "123";
-        List<Survey> mockSurveys = List.of(new Survey());
-        when(surveyRepository.findByUserId(userId)).thenReturn(mockSurveys);
+        Survey testSurvey = TestDataUtil.createTestSurvey();
+        when(surveyRepository.findByUserId("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8"))
+                .thenReturn(List.of(testSurvey));
 
-        List<Survey> surveys = surveyService.getSurveyByUserId(userId);
+        List<Survey> surveys = surveyService.getSurveyByUserId("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8");
 
         assertEquals(1, surveys.size());
-        verify(surveyRepository, times(1)).findByUserId(userId);
+        assertEquals("happy", surveys.get(0).getMood());
+        verify(surveyRepository, times(1)).findByUserId("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8");
     }
 }

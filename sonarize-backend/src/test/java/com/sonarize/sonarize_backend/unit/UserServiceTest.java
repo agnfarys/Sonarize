@@ -25,40 +25,47 @@ class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    private User createTestUser() {
+        User user = new User();
+        user.setId("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8");
+        user.setSpotifyId("461b35iwd06kspq5tc42o47dr");
+        user.setUsername("Wojciech");
+        return user;
+    }
+
     @Test
     void testCreateUser() {
-        User user = new User();
-        user.setUsername("testUser");
+        User user = createTestUser();
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User createdUser = userService.createUser(user);
 
-        assertEquals("testUser", createdUser.getUsername());
+        assertEquals("Wojciech", createdUser.getUsername());
+        assertEquals("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8", createdUser.getId());
         verify(userRepository, times(1)).save(user);
     }
 
     @Test
     void testFindUserByUsername() {
-        User user = new User();
-        user.setUsername("testUser");
-        when(userRepository.findByUsername("testUser")).thenReturn(user);
+        User user = createTestUser();
+        when(userRepository.findByUsername("Wojciech")).thenReturn(user);
 
-        User foundUser = userService.findUserByUsername("testUser");
+        User foundUser = userService.findUserByUsername("Wojciech");
 
-        assertEquals("testUser", foundUser.getUsername());
-        verify(userRepository, times(1)).findByUsername("testUser");
+        assertEquals("Wojciech", foundUser.getUsername());
+        assertEquals("461b35iwd06kspq5tc42o47dr", foundUser.getSpotifyId());
+        verify(userRepository, times(1)).findByUsername("Wojciech");
     }
 
     @Test
     void testGetUserById() {
-        User user = new User();
-        user.setId("123");
-        when(userRepository.findById("123")).thenReturn(Optional.of(user));
+        User user = createTestUser();
+        when(userRepository.findById("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8")).thenReturn(Optional.of(user));
 
-        Optional<User> foundUser = userService.getUserById("123");
+        Optional<User> foundUser = userService.getUserById("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8");
 
         assertTrue(foundUser.isPresent());
-        assertEquals("123", foundUser.get().getId());
-        verify(userRepository, times(1)).findById("123");
+        assertEquals("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8", foundUser.get().getId());
+        verify(userRepository, times(1)).findById("5ef6aa61-9327-458f-9ad2-0dba4bed5ab8");
     }
 }

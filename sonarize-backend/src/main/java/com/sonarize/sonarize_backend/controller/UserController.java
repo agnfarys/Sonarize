@@ -76,7 +76,7 @@ public class UserController {
 
             User user = userOptional.get();
 
-            Map<String, Object> response = new HashMap<>();
+            Map<String, Object> response =  new HashMap<>();
             response.put("userId", user.getId());
             response.put("spotifyAccessToken", user.getAccessToken());
             response.put("spotifyRefreshToken", user.getRefreshToken());

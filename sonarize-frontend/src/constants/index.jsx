@@ -6,16 +6,6 @@ export const navLinks = [
     title: "LOG IN",
     path: "/login",
   },
-  {
-    id: "signup",
-    title: "SIGN UP",
-    path: "/signup",
-  },
-  {
-    id: "playlist",
-    title: "PLAYLIST",
-    path: "/playlist",
-  },
 ];
 
 const AuthContext = createContext();

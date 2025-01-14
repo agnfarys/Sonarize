@@ -16,13 +16,13 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-        console.log("Logout successful.");
-        // Usuń dane z localStorage
-        sessionStorage.removeItem("userId");
-        sessionStorage.removeItem("spotifyAccessToken");
-        sessionStorage.removeItem("username");
-        setIsLoggedIn(false);
-        navigate("/login");
+    console.log("Logout successful.");
+    // Usuń dane z localStorage
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("spotifyAccessToken");
+    sessionStorage.removeItem("username");
+    setIsLoggedIn(false);
+    navigate("/login");
   };
 
   const handleLogoClick = () => {
@@ -46,9 +46,7 @@ const Navbar = () => {
       <ul className="hidden sm:flex list-none justify-end items-center flex-1">
         {isLoggedIn ? (
           <>
-            <li className="mx-4 text-white font-krona">
-              Welcome, {username}
-            </li>
+            <li className="mx-4 text-white font-krona">Welcome, {username}</li>
             <li className="mx-4">
               <Link to="/survey" className="text-white hover:text-secondary">
                 New Survey
@@ -73,11 +71,6 @@ const Navbar = () => {
             <li className="mx-4">
               <Link to="/login" className="text-white hover:text-secondary">
                 Login
-              </Link>
-            </li>
-            <li className="mx-4">
-              <Link to="/signup" className="text-white hover:text-secondary">
-                Sign Up
               </Link>
             </li>
           </>

@@ -10,39 +10,59 @@ const Hero = () => {
     if (isLoggedIn) {
       navigate("/survey");
     } else {
-      navigate("/login"); // Change this to "/login" after implementing login
+      navigate("/login");
     }
   };
 
   return (
-    <section
-      id="home"
-      className={`flex md:flex-row flex-col ${styles.paddingY}`}
-    >
-      <div className="bg-landing w-full h-screen">
-        <div
-          className={`flex-1 ${styles.flexStart} m-6 items-center justify-center flex-col xl:px-0 sm:px-16 px-6`}
-        >
-          <h1 className="flex flex-row items-center mx-auto justify-center text-gradient font-krona text-[40px] sm:text-[64px] md:text-[80px] lg:text-[128px]">
-            SONARIZE
-          </h1>
-          <div className="flex flex-row items-center mx-auto justify-center font-raleway font-semibold tracking-widest text-white text-[32px]">
-            Discover Music Like Never Before
-          </div>
-          <div className="flex flex-row items-center mx-auto justify-center font-raleway font-semibold tracking-wide mt-5 pt-10 text-white text-[20px]">
+    <div>
+      <div className="text-container">
+        <div className="content">
+          <h1>SONARIZE</h1>
+          <div className="subheading">Discover Music Like Never Before</div>
+          <div className="description">
             Join us and let your journey to perfect playlists begin!
           </div>
-
           <button
             type="button"
             onClick={handleButtonClick}
-            className="submit-button w-[30rem] mt-8 p-3 rounded-lg font-krona transition-ease"
+            className="submit-button text-center"
           >
             Dive into your soundtrack
           </button>
         </div>
       </div>
-    </section>
+
+      {/* Gradientowe tło i dodatkowe elementy */}
+      <div className="bg-gradient">
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="goo">
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation="10"
+                result="blur"
+              />
+              <feColorMatrix
+                in="blur"
+                mode="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+                result="goo"
+              />
+              <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+          </defs>
+        </svg>
+        <div className="bg-landing w-full h-full">
+          <div className="g1"></div>
+          <div className="g2"></div>
+          <div className="g3"></div>
+          <div className="g4"></div>
+          <div className="g5"></div>
+          <div className="interactive"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 

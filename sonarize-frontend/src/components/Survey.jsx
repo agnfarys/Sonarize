@@ -7,16 +7,46 @@ const Survey = () => {
   const location = useLocation();
   const [userID, setUserID] = useState(sessionStorage.getItem("userId"));
   const [questions, setQuestions] = useState([
-    { question: "mood", answers: ["happy", "relaxed", "energetic", "sad"], key: "mood" },
-    { question: "genres", answers: ["pop", "rock", "hip-hop", "jazz"], key: "genres" },
-    { question: "energy", answers: ["calm", "moderate", "high", "extreme"], key: "energyLevel" },
-    { question: "occasion", answers: ["workout", "party", "relaxation", "study"], key: "occasion" },
-    { question: "preference", answers: ["new releases", "classics"], key: "discoveryPreference" },
-    { question: "language", answers: ["english", "spanish", "polish", "german", "mixed"], key: "languagePreference" },
-    { question: "length", answers: ["5", "10", "20", "50"], key: "playlistLength" },
+    {
+      question: "mood",
+      answers: ["happy", "calm", "energetic", "sad"],
+      key: "mood",
+    },
+    {
+      question: "genres",
+      answers: ["pop", "rock", "hip-hop", "jazz"],
+      key: "genres",
+    },
+    {
+      question: "intensity",
+      answers: ["low", "medium", "high", "very high"],
+      key: "intensity",
+    },
+    {
+      question: "occasion",
+      answers: ["workout", "party", "relaxation", "study"],
+      key: "occasion",
+    },
+    {
+      question: "preference",
+      answers: ["new releases", "classics"],
+      key: "discoveryPreference",
+    },
+    {
+      question: "language",
+      answers: ["english", "spanish", "polish", "mixed"],
+      key: "languagePreference",
+    },
+    {
+      question: "length",
+      answers: ["5", "10", "20", "50"],
+      key: "playlistLength",
+    },
   ]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(""));
+  const [selectedAnswers, setSelectedAnswers] = useState(
+    Array(questions.length).fill("")
+  );
   const [favoriteArtists, setFavoriteArtists] = useState([]);
   const [customInput, setCustomInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,8 +56,10 @@ const Survey = () => {
 
     // Pobierz dane z parametrów URL
     const userId = params.get("userId") || sessionStorage.getItem("userId");
-    const accessToken = params.get("accessToken") || sessionStorage.getItem("spotifyAccessToken");
-    const username = params.get("username") || sessionStorage.getItem("username");
+    const accessToken =
+      params.get("accessToken") || sessionStorage.getItem("spotifyAccessToken");
+    const username =
+      params.get("username") || sessionStorage.getItem("username");
 
     // Zapisz dane do sessionStorage, jeśli nie są już zapisane
     if (userId && !sessionStorage.getItem("userId")) {
@@ -77,7 +109,9 @@ const Survey = () => {
       const surveyResult = questions.reduce((result, question, index) => {
         const answer = selectedAnswers[index];
         result[question.key] =
-          question.key === "genres" && typeof answer === "string" ? [answer] : answer;
+          question.key === "genres" && typeof answer === "string"
+            ? [answer]
+            : answer;
         return result;
       }, {});
 
@@ -97,7 +131,11 @@ const Survey = () => {
 
         const responseData = await response.json();
         if (responseData.playlistUrl) {
-          navigate(`/playlist-result?playlistUrl=${encodeURIComponent(responseData.playlistUrl)}`);
+          navigate(
+            `/playlist-result?playlistUrl=${encodeURIComponent(
+              responseData.playlistUrl
+            )}`
+          );
         }
       } catch (error) {
         console.error("Error sending POST data:", error);

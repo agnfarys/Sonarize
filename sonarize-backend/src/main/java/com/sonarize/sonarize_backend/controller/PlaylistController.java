@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static com.sonarize.sonarize_backend.controller.AuthController.spotifyApi;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "https://sonarize-frontend-a4axg3dfgseagte8.westeurope-01.azurewebsites.net", allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/api/playlists")
 public class PlaylistController {
     private final PlaylistService playlistService;

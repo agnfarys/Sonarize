@@ -8,7 +8,7 @@ const LogIn = () => {
     const spotifyAuthUrl = new URL("https://accounts.spotify.com/authorize");
     spotifyAuthUrl.searchParams.append("client_id", "6bde7c93eba54dcb9b8bd1edec9d050b");
     spotifyAuthUrl.searchParams.append("response_type", "code");
-    spotifyAuthUrl.searchParams.append("redirect_uri", "http://localhost:8080/api/auth/callback");
+    spotifyAuthUrl.searchParams.append("redirect_uri", "https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback");
     spotifyAuthUrl.searchParams.append(
       "scope",
       [
@@ -30,7 +30,7 @@ const LogIn = () => {
     if (!code) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/auth/callback?code=${code}`);
+      const response = await fetch(`https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback?code=${code}`);
       if (response.ok) {
         const data = await response.json();
 

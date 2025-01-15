@@ -17,7 +17,7 @@ const MyProfile = () => {
 
       try {
         // Pobranie danych użytkownika
-        const userResponse = await fetch(`http://localhost:8080/api/users/user/${userId}`, {
+        const userResponse = await fetch(`https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/users/user/${userId}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -25,7 +25,7 @@ const MyProfile = () => {
         setUserData(userData);
 
         // Pobranie playlist użytkownika
-        const playlistsResponse = await fetch(`http://localhost:8080/api/playlists/user/${userId}`, {
+        const playlistsResponse = await fetch(`https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/playlists/user/${userId}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -33,7 +33,7 @@ const MyProfile = () => {
         setPlaylists(playlistsData);
 
         // Pobranie ankiet użytkownika
-        const surveysResponse = await fetch(`http://localhost:8080/api/surveys/user/${userId}`, {
+        const surveysResponse = await fetch(`https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/surveys/user/${userId}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -41,7 +41,7 @@ const MyProfile = () => {
         setSurveys(surveysData);
 
         // Pobranie podsumowania użytkownika
-        const summaryResponse = await fetch(`http://localhost:8080/api/playlists/user/${userId}/summary`, {
+        const summaryResponse = await fetch(`https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/playlists/user/${userId}/summary`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });

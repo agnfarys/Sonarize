@@ -18,7 +18,7 @@ const HomePage = () => {
       try {
         // Pobierz ostatnią playlistę użytkownika
         const lastPlaylistResponse = await fetch(
-          `http://localhost:8080/api/playlists/user/${userId}/last`
+          `https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/playlists/user/${userId}/last`
         );
         if (lastPlaylistResponse.ok) {
           const lastPlaylistData = await lastPlaylistResponse.json();
@@ -29,7 +29,7 @@ const HomePage = () => {
 
         // Pobierz rekomendacje
         const recommendationsResponse = await fetch(
-          `http://localhost:8080/api/recommendations/${userId}`
+          `https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/recommendations/${userId}`
         );
         if (recommendationsResponse.ok) {
           const recommendationsData = await recommendationsResponse.json();

@@ -14,7 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:5173") // Frontend
+                        .allowedOrigins(
+                                "http://localhost:5173", // Frontend lokalny
+                                "https://sonarize-frontend-a4axg3dfgseagte8.westeurope-01.azurewebsites.net" // Frontend na Azure
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .exposedHeaders("Authorization")

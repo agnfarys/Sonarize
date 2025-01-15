@@ -18,7 +18,7 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/signup", {
+      const response = await fetch("https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

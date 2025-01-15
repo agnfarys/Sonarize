@@ -85,7 +85,7 @@ const Survey = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/api/playlists/generate-chat-playlist?userId=${userID}`,
+          `https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/playlists/generate-chat-playlist?userId=${userID}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "serve dist",
-    "lint": "eslint ."
+    "lint": "eslint",
+    "start": "serve dist -s"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -36,5 +36,6 @@
     "sass": "^1.83.0",
     "tailwindcss": "^3.4.16",
     "vite": "^6.0.1"
-  }
+  },
+  "homepage": "/" 
 }

@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class AuthController {
     private static final String clientId = "6bde7c93eba54dcb9b8bd1edec9d050b";
     private static final String clientSecret = "8ab4cd78ad5740a08b8979b766187677";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback");
 
     @Autowired
     private UserService userService;

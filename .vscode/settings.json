@@ -21,5 +21,6 @@
   "[svg]": {
     "editor.defaultFormatter": "jock.svg"
   },
-  "java.configuration.updateBuildConfiguration": "disabled"
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "java.compile.nullAnalysis.mode": "disabled"
 }

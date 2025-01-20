@@ -34,7 +34,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full flex py-3 justify-between items-center navbar">
+    <nav className="navigation-bar w-full flex py-3 justify-between items-center navbar">
       <div
         className="text-2xl font-krona orange-gradient cursor-pointer"
         onClick={handleLogoClick}

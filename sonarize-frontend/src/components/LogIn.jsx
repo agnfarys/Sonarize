@@ -6,9 +6,15 @@ const LogIn = () => {
 
   const handleSpotifySignUp = () => {
     const spotifyAuthUrl = new URL("https://accounts.spotify.com/authorize");
-    spotifyAuthUrl.searchParams.append("client_id", "6bde7c93eba54dcb9b8bd1edec9d050b");
+    spotifyAuthUrl.searchParams.append(
+      "client_id",
+      "6bde7c93eba54dcb9b8bd1edec9d050b"
+    );
     spotifyAuthUrl.searchParams.append("response_type", "code");
-    spotifyAuthUrl.searchParams.append("redirect_uri", "https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback");
+    spotifyAuthUrl.searchParams.append(
+      "redirect_uri",
+      "https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback"
+    );
     spotifyAuthUrl.searchParams.append(
       "scope",
       [
@@ -30,7 +36,9 @@ const LogIn = () => {
     if (!code) return;
 
     try {
-      const response = await fetch(`https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback?code=${code}`);
+      const response = await fetch(
+        `https://sonarize-chbte2bqe6e5a0gz.westeurope-01.azurewebsites.net/api/auth/callback?code=${code}`
+      );
       if (response.ok) {
         const data = await response.json();
 
@@ -52,14 +60,21 @@ const LogIn = () => {
   }, []);
 
   return (
-    <div className="bg-landing w-full h-screen">
+    <div className="bg-gradient">
       <div className="flex items-center justify-center min-h-screen flex-col">
-        <div className="tile backdrop-blur-sm p-8 rounded-xl w-[30rem] h-[33rem] shadow-xl">
-          <h2 className="login text-white font-krona text-2xl mb-6 text-center">Login to your account</h2>
+        <div className="tile backdrop-blur-sm p-8 rounded-xl w-[30rem] h-[15rem] shadow-xl">
+          <h2 className="login text-white font-krona text-2xl mb-6 text-center">
+            Login to your account
+          </h2>
           <button
-            className="spotify-button w-full p-3 rounded-lg bg-[#1DB954] text-white font-krona transition-colors flex items-center justify-center gap-2"
+            className="spotify-button w-full p-3 rounded-lg text-white font-krona transition-colors flex items-center justify-center gap-2"
             onClick={handleSpotifySignUp}
           >
+            <img
+              className="spotify-logo"
+              src="./src/assets/spotify.svg"
+              alt="Spotify"
+            />
             Sign in with Spotify
           </button>
         </div>

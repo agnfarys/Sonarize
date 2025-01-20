@@ -149,7 +149,7 @@ const Survey = () => {
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
 
   return (
-    <div className="bg-landing w-full h-screen flex items-center justify-center">
+    <div className="bg-gradient w-full h-screen flex items-center justify-center">
       {loading ? (
         <div className="loader w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
       ) : (
